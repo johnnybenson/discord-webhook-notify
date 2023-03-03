@@ -3,6 +3,11 @@ author: johnnybenson@gmail.com (and rjstone@radix.cc)
 description: >
   Send notifications to Discord using a webhook.
   Works with all execution environments including windows, macos, and linux.
+
+branding:
+  color: orange
+  icon: alert-triangle
+
 inputs:
   webhookUrl:
     description: Discord webhook URL. Should be stored in a secret and inserted as a context expression.
@@ -32,9 +37,7 @@ inputs:
   avatarUrl:
     description: URL to png of discord avatar to use. Default is the GitHub monochrome mark cat logo.
     required: false
+
 runs:
   using: 'node16'
-  main: 'index.js'
-branding:
-  color: orange
-  icon: alert-triangle
+  main: 'dist/index.js'
