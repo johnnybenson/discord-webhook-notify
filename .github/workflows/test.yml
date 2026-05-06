@@ -1,30 +1,39 @@
 name: Test Action
 on: [ push ]
+env:
+  DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
 jobs:
   windows_test:
     runs-on: windows-latest
     name: Windows Test Job
     steps:
+    - name: Skip tests without webhook
+      if: ${{ env.DISCORD_WEBHOOK == '' }}
+      run: echo "DISCORD_WEBHOOK secret is not set; skipping Discord notification tests."
     - name: Windows Test Info
-      uses: johnnybenson/discord-webhook-notify@v1.1.4
+      if: ${{ env.DISCORD_WEBHOOK != '' }}
+      uses: johnnybenson/discord-webhook-notify@v1.1.5
       with:
         severity: info
         details: Test succeeded.
-        webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+        webhookUrl: ${{ env.DISCORD_WEBHOOK }}
     - name: Windows Test Warn
-      uses: johnnybenson/discord-webhook-notify@v1.1.4
+      if: ${{ env.DISCORD_WEBHOOK != '' }}
+      uses: johnnybenson/discord-webhook-notify@v1.1.5
       with:
         severity: warn
         details: Test warning.
-        webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+        webhookUrl: ${{ env.DISCORD_WEBHOOK }}
     - name: Windows Test Error
-      uses: johnnybenson/discord-webhook-notify@v1.1.4
+      if: ${{ env.DISCORD_WEBHOOK != '' }}
+      uses: johnnybenson/discord-webhook-notify@v1.1.5
       with:
         severity: error
         details: Test error.
-        webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+        webhookUrl: ${{ env.DISCORD_WEBHOOK }}
     - name: Windows Test Custom
-      uses: johnnybenson/discord-webhook-notify@v1.1.4
+      if: ${{ env.DISCORD_WEBHOOK != '' }}
+      uses: johnnybenson/discord-webhook-notify@v1.1.5
       with:
         severity: info
         username: CustomUsername
@@ -34,49 +43,56 @@ jobs:
         details: 'Custom details: Somebody set up us the bomb.'
         footer: This is a footer.
         text: This is where text goes.
-        webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+        webhookUrl: ${{ env.DISCORD_WEBHOOK }}
     - name: Windows Test Success
-      uses: johnnybenson/discord-webhook-notify@v1.1.4
-      if: success()
+      uses: johnnybenson/discord-webhook-notify@v1.1.5
+      if: ${{ env.DISCORD_WEBHOOK != '' && success() }}
       with:
         severity: info
-        webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+        webhookUrl: ${{ env.DISCORD_WEBHOOK }}
     - name: Windows Test Failure
-      uses: johnnybenson/discord-webhook-notify@v1.1.4
-      if: failure()
+      uses: johnnybenson/discord-webhook-notify@v1.1.5
+      if: ${{ env.DISCORD_WEBHOOK != '' && failure() }}
       with:
         severity: error
-        webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+        webhookUrl: ${{ env.DISCORD_WEBHOOK }}
     - name: Windows Test Cancelled
-      uses: johnnybenson/discord-webhook-notify@v1.1.4
-      if: cancelled()
+      uses: johnnybenson/discord-webhook-notify@v1.1.5
+      if: ${{ env.DISCORD_WEBHOOK != '' && cancelled() }}
       with:
         severity: warn
-        webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+        webhookUrl: ${{ env.DISCORD_WEBHOOK }}
   linux_test:
     runs-on: ubuntu-latest
     name: Linux Test Job
     steps:
+    - name: Skip tests without webhook
+      if: ${{ env.DISCORD_WEBHOOK == '' }}
+      run: echo "DISCORD_WEBHOOK secret is not set; skipping Discord notification tests."
     - name: Linux Test Info
-      uses: johnnybenson/discord-webhook-notify@v1.1.4
+      if: ${{ env.DISCORD_WEBHOOK != '' }}
+      uses: johnnybenson/discord-webhook-notify@v1.1.5
       with:
         severity: info
         details: Test succeeded.
-        webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+        webhookUrl: ${{ env.DISCORD_WEBHOOK }}
     - name: Linux Test Warn
-      uses: johnnybenson/discord-webhook-notify@v1.1.4
+      if: ${{ env.DISCORD_WEBHOOK != '' }}
+      uses: johnnybenson/discord-webhook-notify@v1.1.5
       with:
         severity: warn
         details: Test warning.
-        webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+        webhookUrl: ${{ env.DISCORD_WEBHOOK }}
     - name: Linux Test Error
-      uses: johnnybenson/discord-webhook-notify@v1.1.4
+      if: ${{ env.DISCORD_WEBHOOK != '' }}
+      uses: johnnybenson/discord-webhook-notify@v1.1.5
       with:
         severity: error
         details: Test error.
-        webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+        webhookUrl: ${{ env.DISCORD_WEBHOOK }}
     - name: Linux Test Custom
-      uses: johnnybenson/discord-webhook-notify@v1.1.4
+      if: ${{ env.DISCORD_WEBHOOK != '' }}
+      uses: johnnybenson/discord-webhook-notify@v1.1.5
       with:
         severity: info
         username: CustomUsername
@@ -86,49 +102,56 @@ jobs:
         details: 'Custom details: Somebody set up us the bomb.'
         footer: This is a footer.
         text: This is where text goes.
-        webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+        webhookUrl: ${{ env.DISCORD_WEBHOOK }}
     - name: Linux Test Success
-      uses: johnnybenson/discord-webhook-notify@v1.1.4
-      if: success()
+      uses: johnnybenson/discord-webhook-notify@v1.1.5
+      if: ${{ env.DISCORD_WEBHOOK != '' && success() }}
       with:
         severity: info
-        webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+        webhookUrl: ${{ env.DISCORD_WEBHOOK }}
     - name: Linux Test Failure
-      uses: johnnybenson/discord-webhook-notify@v1.1.4
-      if: failure()
+      uses: johnnybenson/discord-webhook-notify@v1.1.5
+      if: ${{ env.DISCORD_WEBHOOK != '' && failure() }}
       with:
         severity: error
-        webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+        webhookUrl: ${{ env.DISCORD_WEBHOOK }}
     - name: Linux Test Cancelled
-      uses: johnnybenson/discord-webhook-notify@v1.1.4
-      if: cancelled()
+      uses: johnnybenson/discord-webhook-notify@v1.1.5
+      if: ${{ env.DISCORD_WEBHOOK != '' && cancelled() }}
       with:
         severity: warn
-        webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+        webhookUrl: ${{ env.DISCORD_WEBHOOK }}
   macos_test:
     runs-on: macos-latest
     name: MacOS Test Job
     steps:
+    - name: Skip tests without webhook
+      if: ${{ env.DISCORD_WEBHOOK == '' }}
+      run: echo "DISCORD_WEBHOOK secret is not set; skipping Discord notification tests."
     - name: MacOS Test Info
-      uses: johnnybenson/discord-webhook-notify@v1.1.4
+      if: ${{ env.DISCORD_WEBHOOK != '' }}
+      uses: johnnybenson/discord-webhook-notify@v1.1.5
       with:
         severity: info
         details: Test succeeded.
-        webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+        webhookUrl: ${{ env.DISCORD_WEBHOOK }}
     - name: MacOS Test Warn
-      uses: johnnybenson/discord-webhook-notify@v1.1.4
+      if: ${{ env.DISCORD_WEBHOOK != '' }}
+      uses: johnnybenson/discord-webhook-notify@v1.1.5
       with:
         severity: warn
         details: Test warning.
-        webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+        webhookUrl: ${{ env.DISCORD_WEBHOOK }}
     - name: MacOS Test Error
-      uses: johnnybenson/discord-webhook-notify@v1.1.4
+      if: ${{ env.DISCORD_WEBHOOK != '' }}
+      uses: johnnybenson/discord-webhook-notify@v1.1.5
       with:
         severity: error
         details: Test error.
-        webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+        webhookUrl: ${{ env.DISCORD_WEBHOOK }}
     - name: MacOS Test Custom
-      uses: johnnybenson/discord-webhook-notify@v1.1.4
+      if: ${{ env.DISCORD_WEBHOOK != '' }}
+      uses: johnnybenson/discord-webhook-notify@v1.1.5
       with:
         severity: info
         username: CustomUsername
@@ -138,22 +161,22 @@ jobs:
         details: 'Custom details: Somebody set up us the bomb.'
         footer: This is a footer.
         text: This is where text goes.
-        webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+        webhookUrl: ${{ env.DISCORD_WEBHOOK }}
     - name: MacOS Test Success
-      uses: johnnybenson/discord-webhook-notify@v1.1.4
-      if: success()
+      uses: johnnybenson/discord-webhook-notify@v1.1.5
+      if: ${{ env.DISCORD_WEBHOOK != '' && success() }}
       with:
         severity: info
-        webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+        webhookUrl: ${{ env.DISCORD_WEBHOOK }}
     - name: MacOS Test Failure
-      uses: johnnybenson/discord-webhook-notify@v1.1.4
-      if: failure()
+      uses: johnnybenson/discord-webhook-notify@v1.1.5
+      if: ${{ env.DISCORD_WEBHOOK != '' && failure() }}
       with:
         severity: error
-        webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+        webhookUrl: ${{ env.DISCORD_WEBHOOK }}
     - name: MacOS Test Cancelled
-      uses: johnnybenson/discord-webhook-notify@v1.1.4
-      if: cancelled()
+      uses: johnnybenson/discord-webhook-notify@v1.1.5
+      if: ${{ env.DISCORD_WEBHOOK != '' && cancelled() }}
       with:
         severity: warn
-        webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+        webhookUrl: ${{ env.DISCORD_WEBHOOK }}
