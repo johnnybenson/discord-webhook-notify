@@ -1,7 +1,6 @@
-const core = require('@actions/core');
-const github = require('@actions/github');
-
-const webhook = require("webhook-discord");
+import * as core from '@actions/core';
+import * as github from '@actions/github';
+import * as webhook from 'webhook-discord';
 
 const default_avatarUrl = "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png";
 const default_username = "GitHub";
